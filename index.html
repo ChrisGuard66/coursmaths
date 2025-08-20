@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cours de Mathématiques — Seconde</title>
+  <style>
+    :root{
+      --bg:#0f172a;         /* slate-900 */
+      --panel:#111827;      /* gray-900 */
+      --card:#0b1222;       /* custom dark */
+      --text:#e5e7eb;       /* gray-200 */
+      --muted:#334155;      /* slate-600 */
+      --accent:#22d3ee;     /* cyan-400 */
+      --accent-2:#a78bfa;   /* violet-400 */
+      --ok:#10b981;         /* emerald-500 */
+      --bad:#ef4444;        /* red-500 */
+      --warn:#fbbf24;       /* amber-400 */
+    }
+    html,body{margin:0;background:linear-gradient(180deg,var(--bg),#0a0f1c 60%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    a{color:var(--accent)}
+    header{
+      position:relative;overflow:hidden;
+      padding:4rem 1rem 2rem; margin:0 auto; max-width:1100px;
+    }
+    .hero{
+      background: radial-gradient(1200px 400px at 10% -10%, rgba(34,211,238,.25), transparent 40%),
+                  radial-gradient(1000px 500px at 90% -20%, rgba(167,139,250,.2), transparent 40%),
+                  linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+      border:1px solid rgba(255,255,255,.08); border-radius:24px; padding:2rem;
+      box-shadow:0 20px 60px rgba(2,8,23,.6), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    h1{font-size:clamp(1.6rem,4vw,2.6rem); margin:.2rem 0 .8rem}
+    .subtitle{color:#cbd5e1; max-width:65ch}
+    .controls{display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem}
+    .toggle{display:flex; align-items:center; gap:.5rem; background:var(--card); padding:.6rem .8rem; border:1px solid rgba(255,255,255,.06); border-radius:12px}
+    .toggle input{accent-color:var(--accent)}
+
+    nav.toc{max-width:1100px; margin:1rem auto 0; padding:0 1rem 1rem}
+    .toc .chips{display:flex; gap:.6rem; flex-wrap:wrap}
+    .chip{background:linear-gradient(180deg,rgba(34,211,238,.12),rgba(167,139,250,.12)); border:1px solid rgba(255,255,255,.12); color:#e2e8f0; padding:.5rem .75rem; border-radius:999px; text-decoration:none; font-size:.95rem}
+
+    main{max-width:1100px; margin:0 auto; padding:1rem;}
+    section{margin:1.5rem 0 2.25rem}
+    .grid{display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+
+    .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:18px; padding:1rem 1.1rem; box-shadow:0 20px 60px rgba(2,8,23,.6), inset 0 1px 0 rgba(255,255,255,.04)}
+    .card h3{margin:0 0 .7rem}
+    h2{font-size:clamp(1.2rem,2.6vw,1.6rem); margin:0 0 .8rem}
+
+    .callout{border-radius:14px; border:1px solid rgba(255,255,255,.08); padding:.8rem 1rem; margin:.8rem 0; background:rgba(255,255,255,.03)}
+    .callout .k{display:inline-block; font-weight:700; font-size:.8rem; letter-spacing:.04em; text-transform:uppercase; padding:.15rem .5rem; border-radius:999px; margin-right:.4rem;}
+    .def .k{background:rgba(34,211,238,.15); color:#a5f3fc}
+    .prop .k{background:rgba(167,139,250,.15); color:#ddd6fe}
+    .meth .k{background:rgba(251,191,36,.18); color:#fde68a}
+
+    .exemple{border-left:3px solid var(--accent); padding-left:.8rem}
+
+    .exercice{margin:.8rem 0;}
+    .exercice h4{margin:.2rem 0 .4rem}
+    .corrige{display:none; border-left:3px solid var(--ok); padding-left:.8rem; margin-top:.4rem; background:rgba(16,185,129,.06); border-radius:8px; padding:.6rem .8rem}
+
+    /* Global switch to reveal all answers */
+    #show-answers:checked ~ main .corrige{display:block}
+
+    details{background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:.6rem .8rem}
+    details summary{cursor:pointer; font-weight:600}
+
+    .quiz{margin:.6rem 0}
+    .quiz .option{display:block; margin:.45rem 0;}
+    .quiz input{position:absolute; opacity:0}
+    .quiz label{display:block; border:1px solid var(--muted); border-radius:12px; padding:.55rem .7rem; cursor:pointer}
+    .quiz input:checked + label[data-correct="true"]{border-color:var(--ok); box-shadow:0 0 0 2px rgba(16,185,129,.25) inset}
+    .quiz input:checked + label[data-correct="false"]{border-color:var(--bad); box-shadow:0 0 0 2px rgba(239,68,68,.25) inset}
+
+    code, .math{background:rgba(148,163,184,.12); border:1px solid rgba(148,163,184,.2); padding:.05rem .35rem; border-radius:6px}
+
+    footer{max-width:1100px; margin:1rem auto 3rem; padding:0 1rem; color:#94a3b8}
+
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f8fafc; --panel:#ffffff; --card:#ffffff; --text:#0f172a; --muted:#cbd5e1 }
+      header .hero{box-shadow:0 24px 60px rgba(2,8,23,.08)}
+      .card,details{box-shadow:0 24px 60px rgba(2,8,23,.06)}
+    }
+
+    @media print{
+      body{background:#fff; color:#000}
+      header, .chips{display:none}
+      .card, details{box-shadow:none; border:1px solid #ddd}
+      .corrige{display:block}
+      a{text-decoration:none; color:#000}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <h1>Cours de Mathématiques — Seconde</h1>
+      <p class="subtitle">Ressource tout-en-un pour la classe de seconde&nbsp;: définitions essentielles, méthodes, exemples et exercices avec corrigés. Interface prête à projeter et à imprimer.</p>
+      <div class="controls">
+        <label class="toggle"><input id="show-answers" type="checkbox"> Afficher tous les corrigés</label>
+        <span class="toggle">👩‍🏫 Astuce&nbsp;: utilisez <strong>Ctrl/Cmd + P</strong> pour imprimer ou exporter en PDF.</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <div class="chips">
+      <a class="chip" href="#fonctions">Fonctions affines</a>
+      <a class="chip" href="#statistiques">Statistiques descriptives</a>
+      <a class="chip" href="#geometrie">Géométrie/vecteurs</a>
+      <a class="chip" href="#probabilites">Probabilités</a>
+      <a class="chip" href="#algo">Algorithmique (initiation)</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- FONCTIONS -->
+    <section id="fonctions">
+      <h2>Chapitre 1 — Fonctions affines</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Objectifs</h3>
+          <ul>
+            <li>Reconnaître et manipuler une fonction affine <span class="math">f(x)=ax+b</span>.</li>
+            <li>Lire et interpréter le coefficient directeur <span class="math">a</span> et l’ordonnée à l’origine <span class="math">b</span>.</li>
+            <li>Résoudre une équation du type <span class="math">f(x)=k</span>.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Cours</h3>
+          <div class="callout def"><span class="k">Définition</span> Une <strong>fonction affine</strong> est de la forme <span class="math">f(x)=ax+b</span> (avec <span class="math">a,b\in\mathbb R</span>). Si <span class="math">b=0</span>, on parle de fonction <em>linéaire</em> <span class="math">f(x)=ax</span>.</div>
+          <div class="callout prop"><span class="k">Propriété</span> La représentation graphique de <span class="math">f</span> est une droite de pente <span class="math">a</span> et coupant l’axe des ordonnées au point <span class="math">(0,b)</span>. Si <span class="math">a&gt;0</span>, <em>f</em> est croissante ; si <span class="math">a&lt;0</span>, <em>f</em> est décroissante.</div>
+          <div class="callout meth"><span class="k">Méthode</span> Déterminer <span class="math">a</span> à partir de deux points <span class="math">A(x₁,y₁)</span> et <span class="math">B(x₂,y₂)</span> de la droite&nbsp;: <span class="math">a=\dfrac{y₂-y₁}{x₂-x₁}</span>. Puis <span class="math">b=y₁-ax₁</span>.</div>
+          <p class="exemple"><strong>Exemple.</strong> La droite passant par <span class="math">A(1,3)</span> et <span class="math">B(4,9)</span> a pour équation <span class="math">f(x)=2x+1</span> car <span class="math">a=\dfrac{9-3}{4-1}=2</span> et <span class="math">b=3-2\times1=1</span>.</p>
+        </article>
+        <article class="card">
+          <h3>QCM rapide</h3>
+          <div class="quiz">
+            <div class="option">
+              <input id="q1a" name="q1" type="radio" />
+              <label for="q1a" data-correct="true">La fonction <span class="math">f(x)=-3x+5</span> est <strong>affine</strong>.</label>
+            </div>
+            <div class="option">
+              <input id="q1b" name="q1" type="radio" />
+              <label for="q1b" data-correct="false">La fonction <span class="math">f(x)=-3x+5</span> est <strong>linéaire</strong>.</label>
+            </div>
+            <div class="option">
+              <input id="q1c" name="q1" type="radio" />
+              <label for="q1c" data-correct="false">La fonction <span class="math">f(x)=-3x+5</span> est <strong>constante</strong>.</label>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <article class="card exercice">
+        <h4>Exercices</h4>
+        <ol>
+          <li>
+            On sait que la droite <span class="math">(d)</span> passe par <span class="math">A(2,1)</span> et <span class="math">B(6,9)</span>.
+            <ul>
+              <li>Déterminer l’expression de <span class="math">f</span>.</li>
+              <li>Résoudre <span class="math">f(x)=0</span>.</li>
+            </ul>
+            <div class="corrige">
+              <em>Corrigé.</em> <span class="math">a=\dfrac{9-1}{6-2}=\dfrac{8}{4}=2</span> ; <span class="math">b=1-2\times2=-3</span> donc <span class="math">f(x)=2x-3</span>. Résoudre <span class="math">2x-3=0</span> donne <span class="math">x=\dfrac{3}{2}</span>.
+            </div>
+          </li>
+          <li>
+            Soit <span class="math">g(x)=-\tfrac{1}{2}x+4</span>. Dire si <span class="math">g</span> est croissante ou décroissante et justifier.
+            <div class="corrige"><em>Corrigé.</em> Le coefficient directeur vaut <span class="math">-\tfrac{1}{2}&lt;0</span> donc <span class="math">g</span> est décroissante.</div>
+          </li>
+        </ol>
+        <details><summary>Voir un autre exercice guidé</summary>
+          Déterminer <span class="math">a</span> et <span class="math">b</span> pour une droite d’ordonnée à l’origine <span class="math">b=-2</span> passant par <span class="math">C(3,1)</span>.
+          Ici <span class="math">1=a\times3-2</span> donc <span class="math">a=1</span>. Ainsi <span class="math">f(x)=x-2</span>.
+        </details>
+      </article>
+    </section>
+
+    <!-- STATISTIQUES -->
+    <section id="statistiques">
+      <h2>Chapitre 2 — Statistiques descriptives</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Rappels</h3>
+          <div class="callout def"><span class="k">Définition</span> Pour une série de valeurs <span class="math">xᵢ</span> affectées d’effectifs <span class="math">nᵢ</span>, l’effectif total est <span class="math">N=\sum nᵢ</span> et la moyenne <span class="math">\bar{x}=\dfrac{\sum nᵢxᵢ}{N}</span>.</div>
+          <div class="callout prop"><span class="k">Quartiles</span> La <strong>médiane</strong> partage la série ordonnée en deux parties de même taille. Les quartiles <span class="math">Q₁</span> et <span class="math">Q₃</span> partagent en quatre parts (25% / 50% / 75%).</div>
+        </article>
+        <article class="card">
+          <h3>Exemple complet</h3>
+          <p>Notes d’un groupe (sur 20)&nbsp;: <span class="math">7,8,9,9,10,11,12,13,14,14</span>.</p>
+          <ul>
+            <li><strong>Moyenne</strong>&nbsp;: <span class="math">\bar{x}=10{,}7</span>.</li>
+            <li><strong>Médiane</strong>&nbsp;: moyenne des 5ᵉ et 6ᵉ valeurs&nbsp;: <span class="math">(10+11)/2=10{,}5</span>.</li>
+            <li><strong>Q₁</strong>&nbsp;: médiane des 5 premières valeurs <span class="math">\Rightarrow 9</span>.</li>
+            <li><strong>Q₃</strong>&nbsp;: médiane des 5 dernières valeurs <span class="math">\Rightarrow 13</span>.</li>
+          </ul>
+        </article>
+      </div>
+      <article class="card exercice">
+        <h4>Exercices</h4>
+        <ol>
+          <li>
+            On observe les tailles (cm)&nbsp;: <span class="math">160, 162, 165, 165, 168, 170, 171, 172</span>.
+            <ul>
+              <li>Donner la médiane.</li>
+              <li>Calculer la moyenne.</li>
+            </ul>
+            <div class="corrige"><em>Corrigé.</em> Série ordonnée (déjà). Médiane&nbsp;= moyenne des 4ᵉ et 5ᵉ&nbsp;: <span class="math">(165+168)/2=166{,}5</span>. Moyenne&nbsp;: <span class="math">(160+162+165+165+168+170+171+172)/8=166{,}6\,\text{cm}</span> (≈).</div>
+          </li>
+        </ol>
+      </article>
+    </section>
+
+    <!-- GEOMETRIE / VECTEURS -->
+    <section id="geometrie">
+      <h2>Chapitre 3 — Géométrie analytique & vecteurs</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Notions clés</h3>
+          <div class="callout def"><span class="k">Vecteur</span> Si <span class="math">A(x₁,y₁)</span> et <span class="math">B(x₂,y₂)</span>, alors <span class="math">\vec{AB}=(x₂-x₁,\,y₂-y₁)</span>.</div>
+          <div class="callout prop"><span class="k">Distance</span> <span class="math">AB=\sqrt{(x₂-x₁)^2+(y₂-y₁)^2}</span>. Deux vecteurs sont <em>colinéaires</em> si leurs coordonnées sont proportionnelles.</div>
+          <div class="callout meth"><span class="k">Droite</span> Une équation cartésienne de droite s’écrit <span class="math">ax+by+c=0</span>. Avec la pente <span class="math">m=-a/b</span> (si <span class="math">b≠0</span>).</div>
+        </article>
+        <article class="card">
+          <h3>Exemple</h3>
+          <p>Soient <span class="math">A(1,2)</span> et <span class="math">B(5,-1)</span>.</p>
+          <ul>
+            <li><span class="math">\vec{AB}=(4,-3)</span> et <span class="math">AB=\sqrt{4^2+(-3)^2}=5</span>.</li>
+            <li>Équation de <span class="math">(AB)</span>&nbsp;: pente <span class="math">m=-3/4</span>, donc <span class="math">y-2=(-3/4)(x-1)</span> soit <span class="math">3x+4y-11=0</span>.</li>
+          </ul>
+        </article>
+      </div>
+      <article class="card exercice">
+        <h4>Exercices</h4>
+        <ol>
+          <li>
+            Point <span class="math">C(3,4)</span> appartient‑il à la droite <span class="math">3x+4y-11=0</span>&nbsp;?
+            <div class="corrige"><em>Corrigé.</em> <span class="math">3\times3+4\times4-11=9+16-11=14\ne0</span> donc <span class="math">C</span> n’est pas aligné avec <span class="math">A,B</span>.</div>
+          </li>
+          <li>
+            Donner une équation de la droite passant par <span class="math">D(-2,3)</span> et de pente <span class="math">m=2</span>.
+            <div class="corrige"><em>Corrigé.</em> <span class="math">y-3=2(x+2)</span> soit <span class="math">2x-y+7=0</span>.</div>
+          </li>
+        </ol>
+      </article>
+    </section>
+
+    <!-- PROBAS -->
+    <section id="probabilites">
+      <h2>Chapitre 4 — Probabilités</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Éléments de cours</h3>
+          <div class="callout def"><span class="k">Univers</span> Dans une situation <em>équiprobable</em>, la probabilité d’un évènement <span class="math">A</span> est <span class="math">P(A)=\dfrac{|A|}{|\Omega|}</span>.</div>
+          <div class="callout meth"><span class="k">Arbre pondéré</span> Pour des tirages successifs, représenter les issues avec un arbre et multiplier les probabilités le long d’une branche.</div>
+        </article>
+        <article class="card">
+          <h3>Exemple</h3>
+          <p>Un sac contient 5 boules rouges et 3 bleues. On tire 2 boules <strong>sans remise</strong>.</p>
+          <ul>
+            <li><strong>Deux rouges</strong>&nbsp;: <span class="math">\dfrac{5}{8}\times\dfrac{4}{7}=\dfrac{5}{14}\approx0{,}357</span>.</li>
+            <li><strong>Une rouge et une bleue</strong>&nbsp;: <span class="math">\dfrac{5}{8}\times\dfrac{3}{7}+\dfrac{3}{8}\times\dfrac{5}{7}=\dfrac{15}{28}\approx0{,}536</span>.</li>
+            <li><strong>Deux bleues</strong>&nbsp;: <span class="math">\dfrac{3}{8}\times\dfrac{2}{7}=\dfrac{3}{28}\approx0{,}107</span>.</li>
+          </ul>
+        </article>
+      </div>
+      <article class="card exercice">
+        <h4>Exercice</h4>
+        <p>On lance un dé équilibré à 6 faces numérotées de 1 à 6.</p>
+        <ul>
+          <li>Probabilité d’obtenir un nombre pair.</li>
+          <li>Probabilité d’obtenir un multiple de 3.</li>
+          <li>Probabilité d’obtenir un nombre pair <em>ou</em> multiple de 3.</li>
+        </ul>
+        <div class="corrige"><em>Corrigé.</em> P(pair)=<span class="math">3/6=1/2</span>; P(multiple de 3)=<span class="math">2/6=1/3</span>; l’intersection {6} vaut <span class="math">1/6</span>, donc P(pair ou multiple de 3)=<span class="math">1/2+1/3-1/6=2/3</span>.</div>
+      </article>
+    </section>
+
+    <!-- ALGO -->
+    <section id="algo">
+      <h2>Chapitre 5 — Algorithmique (initiation)</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Objectif</h3>
+          <p>Traduire une méthode mathématique en étapes simples (pseudocode) et tester des exemples à la main.</p>
+          <div class="callout meth"><span class="k">Exemple de méthode</span> Calculer l’image par une fonction affine <span class="math">f(x)=ax+b</span> :
+            <ol>
+              <li>Lire <span class="math">a</span>, <span class="math">b</span> et <span class="math">x</span>.</li>
+              <li>Calculer <span class="math">y=ax+b</span>.</li>
+              <li>Afficher <span class="math">y</span>.</li>
+            </ol>
+          </div>
+        </article>
+        <article class="card">
+          <h3>Pseudo‑code</h3>
+          <pre><code>Entrées : a, b, x
+Sortie  : y
+Début
+  y &larr; a*x + b
+  Afficher y
+Fin
+</code></pre>
+        </article>
+      </div>
+      <article class="card exercice">
+        <h4>Mini‑projets</h4>
+        <ol>
+          <li>Écrire un algorithme qui teste si un entier <span class="math">n</span> est multiple de 3.</li>
+          <li>Écrire un algorithme qui calcule la moyenne d’une liste de nombres.</li>
+        </ol>
+        <div class="corrige"><em>Indications.</em> Utiliser l’opération «&nbsp;reste&nbsp;» (<code>mod</code>) pour le multiple de 3 ; pour la moyenne, accumuler la somme puis diviser par l’effectif.</div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>Contenu au format HTML/CSS — vous pouvez adapter les couleurs, ajouter vos propres exercices, et imprimer pour vos élèves. © Vous pouvez librement réutiliser et modifier pour un usage pédagogique.</p>
+  </footer>
+</body>
+</html>
